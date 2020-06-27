@@ -2,6 +2,7 @@ import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import { getRepository, Repository } from 'typeorm';
 import User from '@modules/users/infra/typeorm/entities/User';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
+import { ILike } from '@shared/utils/findOperatorWithExtras';
 
 class UsersRepository implements IUsersRepository {
   private ormRepository: Repository<User>;
@@ -28,13 +29,13 @@ class UsersRepository implements IUsersRepository {
 
   public async findByEmail(email: string): Promise<User | undefined> {
     return this.ormRepository.findOne({
-      where: { email },
+      where: { email: ILike<string>(`%${email}%`) },
     });
   }
 
   public async findByUsername(username: string): Promise<User | undefined> {
     return this.ormRepository.findOne({
-      where: { username },
+      where: { username: ILike<string>(`%${username}%`) },
     });
   }
 }

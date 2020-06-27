@@ -1,5 +1,4 @@
 import User from '@modules/users/infra/typeorm/entities/User';
-import { getRepository } from 'typeorm';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
@@ -22,19 +21,15 @@ class CreateUserService {
   ) {}
 
   public async execute({ username, email, password }: IRequest): Promise<User> {
-    const usersRepository = getRepository(User);
-
-    const checkUsernameUsed = await usersRepository.findOne({
-      where: { username },
-    });
+    const checkUsernameUsed = await this.usersRepository.findByUsername(
+      username,
+    );
 
     if (checkUsernameUsed) {
       throw new AppError('Username already in use.');
     }
 
-    const checkEmailUsed = await usersRepository.findOne({
-      where: { email },
-    });
+    const checkEmailUsed = await this.usersRepository.findByEmail(email);
 
     if (checkEmailUsed) {
       throw new AppError('E-mail already in use.');
