@@ -28,6 +28,14 @@ class TournamentsRepository implements ITournamentsRepository {
       where: { name: ILike<string>(`%${name}%`) },
     });
   }
+
+  public async findAllByOwner(
+    ownerId: number,
+  ): Promise<[Tournament[], number]> {
+    return this.ormRepository.findAndCount({
+      where: { ownerId },
+    });
+  }
 }
 
 export default TournamentsRepository;
