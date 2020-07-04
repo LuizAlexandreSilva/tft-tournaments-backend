@@ -21,6 +21,9 @@ class CreateUserService {
   ) {}
 
   public async execute({ username, email, password }: IRequest): Promise<User> {
+    const lowerCasedUsername = username.toLocaleLowerCase();
+    const lowerCasedEmail = email.toLocaleLowerCase();
+
     const checkUsernameUsed = await this.usersRepository.findByUsername(
       username,
     );
@@ -38,8 +41,8 @@ class CreateUserService {
     const hashedPassword = await this.hashProvider.generateHash(password);
 
     const user = await this.usersRepository.create({
-      username,
-      email,
+      username: lowerCasedUsername,
+      email: lowerCasedEmail,
       password: hashedPassword,
     });
 
