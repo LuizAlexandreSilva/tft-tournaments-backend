@@ -6,4 +6,5 @@ export default interface ITournamentsRepository {
   findById(id: number): Promise<Tournament | undefined>;
   findByName(name: string): Promise<Tournament | undefined>;
   findAllByOwner(ownerId: number): Promise<[Tournament[], number]>;
+  searchByName(name?: string): Promise<Tournament[]>;
 }

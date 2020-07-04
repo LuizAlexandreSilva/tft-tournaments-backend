@@ -6,6 +6,7 @@ import { celebrate, Joi, Segments } from 'celebrate';
 const tournamentsRouter = Router();
 const tournamentsController = new TournamentsController();
 
+tournamentsRouter.get('/', tournamentsController.get);
 tournamentsRouter.get('/:id', tournamentsController.index);
 
 tournamentsRouter.use(ensureAuthenticated);

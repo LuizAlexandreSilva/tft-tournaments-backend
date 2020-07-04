@@ -25,7 +25,7 @@ class TournamentsRepository implements ITournamentsRepository {
 
   public async findByName(name: string): Promise<Tournament | undefined> {
     return this.ormRepository.findOne({
-      where: { name: ILike<string>(`%${name}%`) },
+      where: { name: ILike<string>(`${name}`) },
     });
   }
 
@@ -34,6 +34,18 @@ class TournamentsRepository implements ITournamentsRepository {
   ): Promise<[Tournament[], number]> {
     return this.ormRepository.findAndCount({
       where: { ownerId },
+    });
+  }
+
+  public async searchByName(name?: string): Promise<Tournament[]> {
+    if (!name) {
+      return this.ormRepository.find({
+        order: { createdAt: 'DESC' },
+      });
+    }
+    return this.ormRepository.find({
+      where: { name: ILike<string>(`%${name}%`) },
+      order: { createdAt: 'DESC' },
     });
   }
 }
