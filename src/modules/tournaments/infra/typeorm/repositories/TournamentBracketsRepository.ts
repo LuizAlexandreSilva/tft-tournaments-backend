@@ -90,6 +90,21 @@ class TournamentBracketsRepository implements ITournamentBracketsRepository {
       }
     });
   }
+
+  public async setPlayerBracket(
+    partial: DeepPartial<TournamentBracket>,
+  ): Promise<void> {
+    await this.ormRepository.update(
+      {
+        tournamentId: partial.tournamentId,
+        playerNickname: partial.playerNickname,
+        numPhase: partial.numPhase,
+      },
+      {
+        bracketNumber: partial.bracketNumber,
+      },
+    );
+  }
 }
 
 export default TournamentBracketsRepository;

@@ -11,4 +11,5 @@ export default interface ITournamentBracketsRepository {
   ): Promise<TournamentBracket[]>;
   checkPermissionToEditPhase(data: ICheckEditPermissionDTO): Promise<boolean>;
   bulkSetPhase(partial: DeepPartial<TournamentBracket>[]): Promise<void>;
+  setPlayerBracket(partial: DeepPartial<TournamentBracket>): Promise<void>;
 }

@@ -102,7 +102,9 @@ class GenerateBracketsService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      await this.tournamentBracketsRepository.bulkSetPhase(tournamentBrackets);
+      tournamentBrackets.forEach(async tBracket => {
+        await this.tournamentBracketsRepository.setPlayerBracket(tBracket);
+      });
     } catch (e) {
       await queryRunner.rollbackTransaction();
       throw new AppError('Error storing players');
