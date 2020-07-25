@@ -77,33 +77,20 @@ class TournamentBracketsRepository implements ITournamentBracketsRepository {
   public async bulkSetPhase(
     partial: DeepPartial<TournamentBracket>[],
   ): Promise<void> {
-    partial.map(item => {
+    for (const item of partial) {
       if (item) {
-        this.ormRepository.update(
+        await this.ormRepository.update(
           {
             tournamentId: item.tournamentId,
             playerNickname: item.playerNickname,
             numPhase: item.numPhase,
           },
-          new TournamentBracket(),
+          {
+            bracketNumber: item.bracketNumber,
+          },
         );
       }
-    });
-  }
-
-  public async setPlayerBracket(
-    partial: DeepPartial<TournamentBracket>,
-  ): Promise<void> {
-    await this.ormRepository.update(
-      {
-        tournamentId: partial.tournamentId,
-        playerNickname: partial.playerNickname,
-        numPhase: partial.numPhase,
-      },
-      {
-        bracketNumber: partial.bracketNumber,
-      },
-    );
+    }
   }
 }
 
